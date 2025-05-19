@@ -1,4 +1,4 @@
-<template>
+cd "/home/sebas-sys/Documentos/reporte de incidencias/frontend"git remote set-url origin https://github.com/jsebas-sys/Ingesoft.git<template>
   <div class="dashboard-outer">
     <div class="dashboard-header">
       <div class="header-left">
