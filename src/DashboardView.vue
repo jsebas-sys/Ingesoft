@@ -9,9 +9,6 @@ cd "/home/sebas-sys/Documentos/reporte de incidencias/frontend"git remote set-ur
         <button :class="{active: view==='dashboard'}" @click="$emit('set-view', 'dashboard')">Dashboard</button>
         <button :class="{active: view==='incidencias'}" @click="$emit('set-view', 'incidencias')">Incidencias</button>
       </div>
-      <div class="header-center">
-        <button class="header-btn">Crear nueva incidencia</button>
-      </div>
       <div class="header-user">
         <span class="user-name">ROBERTO LOPEZ</span>
         <span class="user-avatar"> <img src="https://ui-avatars.com/api/?name=Roberto+Lopez&background=009966&color=fff&rounded=true&size=32" alt="avatar" /> </span>
