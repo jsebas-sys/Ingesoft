@@ -59,16 +59,30 @@ export default {
     let chartInstance = null;
     const casesChart = ref(null);
     onMounted(() => {
-      axios.get('/api/incidencias/')
+      axios.get(API_URL)
         .then(response => {
-          const incidencias = response.data
-          const statusCounts = { nuevo: 0, asignado: 0, en_proceso: 0, resuelto: 0 }
-          incidencias.forEach(incidencia => {
-            if (incidencia.estado === 'pendiente') statusCounts.nuevo++
-            else if (incidencia.estado === 'asignado') statusCounts.asignado++
-            else if (incidencia.estado === 'en_proceso') statusCounts.en_proceso++
-            else if (incidencia.estado === 'resuelto') statusCounts.resuelto++
-          })
+          const data = response.data;
+          let lista = [];
+          if (Array.isArray(data)) {
+            lista = data;
+          } else if (Array.isArray(data.results)) {
+            lista = data.results;
+          } else if (data && typeof data === 'object') {
+            for (const key in data) {
+              if (Array.isArray(data[key])) {
+                lista = data[key];
+                break;
+              }
+            }
+          }
+          // Calcular los contadores para el dashboard
+          const statusCounts = { pendiente: 0, en_proceso: 0, resuelto: 0 };
+          lista.forEach(incidencia => {
+            if (incidencia.estado === 'pendiente') statusCounts.pendiente++;
+            else if (incidencia.estado === 'en_proceso') statusCounts.en_proceso++;
+            else if (incidencia.estado === 'resuelto') statusCounts.resuelto++;
+          });
+          // Puedes exponer statusCounts como ref/reactive si lo necesitas en el template
           if (casesChart.value) {
             const ctx = casesChart.value.getContext('2d')
             if (chartInstance) {
@@ -77,16 +91,15 @@ export default {
             chartInstance = new Chart(ctx, {
               type: 'bar',
               data: {
-                labels: ['Pendiente', 'Asignado', 'En Proceso', 'Resuelto'],
+                labels: ['Pendiente', 'En Proceso', 'Resuelto'],
                 datasets: [{
                   label: 'Casos',
                   data: [
-                    statusCounts.nuevo,
-                    statusCounts.asignado,
+                    statusCounts.pendiente,
                     statusCounts.en_proceso,
                     statusCounts.resuelto
                   ],
-                  backgroundColor: ['#e67e22', '#3498db', '#f1c40f', '#2ecc71']
+                  backgroundColor: ['#e67e22', '#f1c40f', '#2ecc71']
                 }]
               },
               options: {
