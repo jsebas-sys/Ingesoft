@@ -105,14 +105,20 @@ export default {
       axios.get('/api/incidencias/')
         .then(response => {
           const data = response.data;
-          console.log('Respuesta incidencias:', data); // <-- Para depuración
+          let lista = [];
           if (Array.isArray(data)) {
-            incidencias.value = data;
+            lista = data;
           } else if (Array.isArray(data.results)) {
-            incidencias.value = data.results;
-          } else {
-            incidencias.value = [];
+            lista = data.results;
+          } else if (data && typeof data === 'object') {
+            for (const key in data) {
+              if (Array.isArray(data[key])) {
+                lista = data[key];
+                break;
+              }
+            }
           }
+          incidencias.value = lista;
         })
         .catch(error => {
           console.error('Error fetching incidencias:', error)
