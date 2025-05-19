@@ -85,6 +85,10 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
+const API_URL = import.meta.env.PROD
+  ? 'https://backen-incidencias-production.up.railway.app/api/incidencias/'
+  : '/api/incidencias/';
+
 export default {
   name: 'IncidenciasView',
   props: ['view'],
@@ -102,7 +106,7 @@ export default {
     })
 
     const fetchIncidencias = () => {
-      axios.get('/api/incidencias/')
+      axios.get(API_URL)
         .then(response => {
           const data = response.data;
           let lista = [];
@@ -126,7 +130,7 @@ export default {
     }
 
     const submitForm = () => {
-      axios.post('/api/incidencias/', form.value)
+      axios.post(API_URL, form.value)
         .then(() => {
           fetchIncidencias()
           showForm.value = false
