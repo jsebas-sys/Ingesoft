@@ -106,7 +106,7 @@ export default {
         .then(response => {
           // Soporta respuesta paginada y no paginada
           const data = response.data;
-          incidencias.value = Array.isArray(data) ? data : data.results;
+          incidencias.value = Array.isArray(data) ? data : (data.results || []);
         })
         .catch(error => {
           console.error('Error fetching incidencias:', error)
