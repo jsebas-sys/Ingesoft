@@ -104,9 +104,15 @@ export default {
     const fetchIncidencias = () => {
       axios.get('/api/incidencias/')
         .then(response => {
-          // Soporta respuesta paginada y no paginada
           const data = response.data;
-          incidencias.value = Array.isArray(data) ? data : (data.results || []);
+          console.log('Respuesta incidencias:', data); // <-- Para depuración
+          if (Array.isArray(data)) {
+            incidencias.value = data;
+          } else if (Array.isArray(data.results)) {
+            incidencias.value = data.results;
+          } else {
+            incidencias.value = [];
+          }
         })
         .catch(error => {
           console.error('Error fetching incidencias:', error)
