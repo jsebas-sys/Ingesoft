@@ -18,7 +18,7 @@ cd "/home/sebas-sys/Documentos/reporte de incidencias/frontend"git remote set-ur
       <div class="card card-pendiente">
         <div class="card-header">
           <span class="card-icon">📝</span>
-          <span>Pendiente (0/3)</span>
+          <span>Pendiente ({{pendientes}}/3)</span>
         </div>
         <ul>
           <li><span class="label label-orange"></span> <span class="label-text">-</span></li>
@@ -62,6 +62,7 @@ export default {
   setup() {
     let chartInstance = null;
     const casesChart = ref(null);
+    const pendientes = ref(0);
     onMounted(() => {
       axios.get(API_URL)
         .then(response => {
@@ -86,6 +87,7 @@ export default {
             else if (incidencia.estado === 'en_proceso') statusCounts.en_proceso++;
             else if (incidencia.estado === 'resuelto') statusCounts.resuelto++;
           });
+          pendientes.value = statusCounts.pendiente;
           // Puedes exponer statusCounts como ref/reactive si lo necesitas en el template
           if (casesChart.value) {
             const ctx = casesChart.value.getContext('2d')
@@ -119,7 +121,7 @@ export default {
           console.error('Error fetching incidencias:', error)
         })
     })
-    return { casesChart }
+    return { casesChart, pendientes }
   }
 }
 </script>
