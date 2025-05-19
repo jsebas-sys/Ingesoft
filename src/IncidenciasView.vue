@@ -72,7 +72,7 @@
             <td>
               <span :class="['label', prioridadClass(incidencia.prioridad)]">{{ incidencia.prioridad }}</span>
             </td>
-            <td>{{ incidencia.usuario.username }}</td>
+            <td>{{ incidencia.usuario ? incidencia.usuario.username : '' }}</td>
             <td>{{ incidencia.detalle }}</td>
           </tr>
         </tbody>
