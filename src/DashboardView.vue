@@ -51,6 +51,10 @@ import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 import axios from 'axios'
 
+const API_URL = import.meta.env.PROD
+  ? 'https://backen-incidencias-production.up.railway.app/api/incidencias/'
+  : '/api/incidencias/';
+
 export default {
   name: 'DashboardView',
   props: ['view'],
