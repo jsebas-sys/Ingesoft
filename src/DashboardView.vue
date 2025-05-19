@@ -63,6 +63,8 @@ export default {
     let chartInstance = null;
     const casesChart = ref(null);
     const pendientes = ref(0);
+    const enProceso = ref(0);
+    const resueltas = ref(0);
     onMounted(() => {
       axios.get(API_URL)
         .then(response => {
@@ -88,6 +90,8 @@ export default {
             else if (incidencia.estado === 'resuelto') statusCounts.resuelto++;
           });
           pendientes.value = statusCounts.pendiente;
+          enProceso.value = statusCounts.en_proceso;
+          resueltas.value = statusCounts.resuelto;
           // Puedes exponer statusCounts como ref/reactive si lo necesitas en el template
           if (casesChart.value) {
             const ctx = casesChart.value.getContext('2d')
@@ -121,7 +125,7 @@ export default {
           console.error('Error fetching incidencias:', error)
         })
     })
-    return { casesChart, pendientes }
+    return { casesChart, pendientes, enProceso, resueltas }
   }
 }
 </script>
