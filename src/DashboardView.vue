@@ -18,12 +18,12 @@ cd "/home/sebas-sys/Documentos/reporte de incidencias/frontend"git remote set-ur
       <div class="card card-pendiente">
         <div class="card-header">
           <span class="card-icon">📝</span>
-          <span>Pendiente ({{pendientes}}/3)</span>
+          <span>Pendiente ({{pendientes}})</span>
         </div>
         <ul>
-          <li><span class="label label-orange"></span> <span class="label-text">-</span></li>
-          <li><span class="label label-green"></span> <span class="label-text">-</span></li>
-          <li><span class="label label-yellow"></span> <span class="label-text">-</span></li>
+          <li><span class="label label-orange"></span> <span class="label-text">Pendientes: {{ pendientes }}</span></li>
+          <li><span class="label label-yellow"></span> <span class="label-text">En proceso: {{ enProceso }}</span></li>
+          <li><span class="label label-green"></span> <span class="label-text">Resueltas: {{ resueltas }}</span></li>
         </ul>
       </div>
       <div class="card card-modified">

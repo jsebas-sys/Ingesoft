@@ -151,6 +151,16 @@ export default {
         })
     }
 
+    const updateIncidencia = (incidencia, field, value) => {
+      axios.patch(`${API_URL}${incidencia.id}/`, { [field]: value })
+        .then(() => {
+          fetchIncidencias();
+        })
+        .catch(error => {
+          console.error('Error actualizando incidencia:', error);
+        });
+    }
+
     onMounted(() => {
       fetchIncidencias()
     })
@@ -173,7 +183,7 @@ export default {
       }
     }
 
-    return { incidencias, estadoClass, prioridadClass, showForm, form, submitForm }
+    return { incidencias, estadoClass, prioridadClass, showForm, form, submitForm, updateIncidencia }
   }
 }
 </script>
