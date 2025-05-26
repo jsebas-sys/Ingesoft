@@ -32,9 +32,11 @@ cd "/home/sebas-sys/Documentos/reporte de incidencias/frontend"git remote set-ur
           <span>Modificadas recientemente (30 Días)</span>
         </div>
         <ul>
-          <li><span class="label label-blue"></span> <span class="label-text">-</span></li>
-          <li><span class="label label-pink"></span> <span class="label-text">-</span></li>
-          <li><span class="label label-purple"></span> <span class="label-text">-</span></li>
+          <li v-for="(incidencia, index) in recientesMostrar" :key="index">
+            <span class="label label-blue"></span>
+            <span class="label-text">{{ incidencia.codigo }} - {{ incidencia.equipo }} ({{ incidencia.estado }}) - {{ new Date(incidencia.updated_at).toLocaleDateString() }}</span>
+          </li>
+          <li v-if="recientesMostrar.length === 0"><span class="label label-blue"></span> <span class="label-text">-</span></li>
         </ul>
       </div>
       <div class="chart-card">
@@ -65,6 +67,7 @@ export default {
     const pendientes = ref(0);
     const enProceso = ref(0);
     const resueltas = ref(0);
+    const recientesMostrar = ref([]);
     onMounted(() => {
       axios.get(API_URL)
         .then(response => {
@@ -92,6 +95,14 @@ export default {
           pendientes.value = statusCounts.pendiente;
           enProceso.value = statusCounts.en_proceso;
           resueltas.value = statusCounts.resuelto;
+
+          // Filtrar modificadas recientemente (últimos 30 días)
+          const hoy = new Date();
+          const hace30 = new Date(hoy.getTime() - 30 * 24 * 60 * 60 * 1000);
+          recientesMostrar.value = lista.filter(inc =>
+            inc.updated_at && new Date(inc.updated_at) >= hace30
+          ).slice(0, 3);
+
           // Puedes exponer statusCounts como ref/reactive si lo necesitas en el template
           if (casesChart.value) {
             const ctx = casesChart.value.getContext('2d')
@@ -125,7 +136,7 @@ export default {
           console.error('Error fetching incidencias:', error)
         })
     })
-    return { casesChart, pendientes, enProceso, resueltas }
+    return { casesChart, pendientes, enProceso, resueltas, recientesMostrar }
   }
 }
 </script>
